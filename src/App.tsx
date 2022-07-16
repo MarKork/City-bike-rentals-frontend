@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Routes, Route} from 'react-router-dom';
+import BikeRentals from './components/BikeRentals'
+import Stations from './components/Stations'
+import Home from './components/Home'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const App = () => {
+  
+  return(
+    <div>
+      <h1><a href="/" style={{textDecoration:"none"}}>Kaupunkipyörien vuokraukset</a></h1>
+
+      <Routes>
+          <Route path='/bikerentals' element={<BikeRentals/>}/>
+          <Route path='/stations' element={<Stations/>}/>
+          <Route path='/home' element={<Home/>}/>
+          <Route path='/' element={<Home/>}/>
+      </Routes>
+      
     </div>
-  );
+    
+  )
+  
 }
 
 export default App;
