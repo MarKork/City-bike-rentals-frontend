@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import BikeRentals from './BikeRentals'
 import {Link} from 'react-router-dom'
 
 const Home = () =>{
@@ -15,8 +14,8 @@ const Home = () =>{
                 getData()
             }else setIsDataFetched(true)
         })
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+       //eslint-disable-next-line react-hooks/exhaustive-deps
+    },[isDataFetched])
 
     const getData = async () =>{
         const {data} =await axios.get(`https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv`)
