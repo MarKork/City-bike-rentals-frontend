@@ -8,3 +8,11 @@ export type BikeRental = {
     distance: Number,
     duration: Number
 }
+
+export type Station = {
+    id: Number,
+    name: String,
+    address: String,
+    city: String,
+    capacity: Number
+}

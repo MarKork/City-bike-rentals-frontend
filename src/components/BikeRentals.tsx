@@ -25,13 +25,17 @@ const BikeRentals = () =>{
         if(page==0){
             setPage(1)
         }
-        if(page==5){
-            setPage(4)
+        let pagesTotal=bikeRentals.length/5 
+        let pagesMax = Math.ceil(pagesTotal)
+
+        if(page===pagesMax+1){
+            setPage(pagesMax)
         }
+
         const last = page*5
         const first = last - 5
         setRentalsOnPage(bikeRentals.slice(first,last))
-    }, [page])
+    }, [page, bikeRentals])
 
     const getRentals = async() => {
         try{
@@ -54,6 +58,7 @@ const BikeRentals = () =>{
         <Container>
             <div>
                 <Link to="/">takaisin</Link>
+                <h2>Vuokrausmatkat</h2>
             </div>
             {bikeRentals?
                 <div>
