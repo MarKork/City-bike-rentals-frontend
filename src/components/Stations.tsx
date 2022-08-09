@@ -13,6 +13,9 @@ const Stations = () =>{
     const [page, setPage] = useState(1)
     const [maxPage, setMaxPage] = useState<number>()
     const [stationsOnPage, setStationsOnPage] = useState<Station[]>([])
+    const [searchName, setSearchName] = useState("")
+    const [isSearch, setIsSearch] = useState(false)
+    const [foundStation, setFoundStation] = useState<Station>()
 
     useEffect (() => {
         getStations()
@@ -60,6 +63,28 @@ const Stations = () =>{
         }
     }
 
+    const searchForName = async(e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if(searchName){
+            try{
+                const response = await axios.get('http://localhost:3001/api/station/name' +  `/${searchName}`)
+                console.log(response.data)
+                setIsSearch(true)
+                setFoundStation(response.data)
+                setSearchName("")
+            }catch (error){
+                console.log(error)
+            }
+        }else{
+            getStations()
+            setIsSearch(false)
+        }
+    }
+
+    const handleChangeSearchName = (event: React.FormEvent<HTMLInputElement>) => {
+        setSearchName(event.currentTarget.value)
+    }
+
     return(
         <Container>
             <div>
@@ -68,26 +93,50 @@ const Stations = () =>{
             </div>
             {stationsOnPage?
                 <div>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>Tunnus</th>
-                                <th>Nimi</th>
-                                <th>Osoite</th>
-                            </tr>
-                            {stationsOnPage.map((station, index)=>
+                    <form onSubmit={searchForName}>
+                        <input 
+                            placeholder="Hae asemaa nimellä"
+                            value={searchName}
+                            onChange={handleChangeSearchName}
+                        />
+                        <Button type="submit">Hae</Button>
+                    </form>
+                    {isSearch&&foundStation?
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Tunnus</th>
+                                    <th>Nimi</th>
+                                    <th>Osoite</th>
+                                </tr>
                                 <StationInfo 
-                                    key={index}
-                                    station={station}
+                                    key={1}
+                                    station={foundStation}
                                 />
-                            )}
-                        </tbody>
-                    </table>
-                    <Pagination>
-                        <Button onClick={changePageBack}>&lt;</Button>
-                            <PageNum>{page}</PageNum>
-                        <Button onClick={changePageForth}>&gt;</Button>
-                    </Pagination>
+                            </tbody>
+                        </table>
+                    :<>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Tunnus</th>
+                                    <th>Nimi</th>
+                                    <th>Osoite</th>
+                                </tr>
+                                {stationsOnPage.map((station, index)=>
+                                    <StationInfo 
+                                        key={index}
+                                        station={station}
+                                    />
+                                )}
+                            </tbody>
+                        </table>
+                        <Pagination>
+                            <Button onClick={changePageBack}>&lt;</Button>
+                                <PageNum>{page}</PageNum>
+                            <Button onClick={changePageForth}>&gt;</Button>
+                        </Pagination>
+                    </>}       
                 </div>
             :<p>Odota hetki</p>}
         </Container>
