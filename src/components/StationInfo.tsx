@@ -1,6 +1,7 @@
 import React from 'react';
 import { Station } from '../types';
 import { useState, useEffect } from 'react'
+import {Link} from 'react-router-dom'
 
 const StationInfo = ({station}:{station:Station}) => {
 
@@ -11,7 +12,7 @@ const StationInfo = ({station}:{station:Station}) => {
                 {station.id.toString()}  
             </td>
             <td>
-                {station.name}  
+                <Link to={`/stations/${station.id}`} key={station.id.toString()}>{station.name}</Link>
             </td>
             <td>
                 {station.address}  

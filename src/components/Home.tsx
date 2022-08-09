@@ -40,7 +40,7 @@ const Home = () =>{
     }
 
     const getRentalsData = async () =>{
-        const {data} =await axios.get(`https://dev.hsl.fi/citybikes/od-trips-2021/2021-06.csv`)
+        const {data} =await axios.get(`https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv`)
         parseRentalsCSV(data)
     }
 
@@ -57,7 +57,7 @@ const Home = () =>{
         lines.forEach(async(line) => {
             const columns = line.split(',');
             //data validation here:
-            if(Number(columns[6])>10&&Number(columns[7])>10&&i<21){
+            if(Number(columns[6])>10&&Number(columns[7])>10&&i<200){
                 columns[7]=columns[7].replace("\r", "")
                 output.push(columns);
             }
@@ -100,7 +100,7 @@ const Home = () =>{
                 let capacity=columns[13]
                 columns[10]=capacity
             }
-            if(i<30){
+            if(i<100){
                 output.push(columns);
             }
             i++

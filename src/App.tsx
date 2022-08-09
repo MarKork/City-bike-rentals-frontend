@@ -3,6 +3,7 @@ import './App.css';
 import {Routes, Route} from 'react-router-dom';
 import BikeRentals from './components/BikeRentals'
 import Stations from './components/Stations'
+import StationView from './components/StationView'
 import Home from './components/Home'
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
 
       <Routes>
           <Route path='/bikerentals' element={<BikeRentals/>}/>
+          <Route path='/stations/:id' element={<StationView/>} />
           <Route path='/stations' element={<Stations/>}/>
           <Route path='/home' element={<Home/>}/>
           <Route path='/' element={<Home/>}/>

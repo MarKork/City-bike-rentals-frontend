@@ -11,6 +11,7 @@ import {
 const BikeRentals = () =>{
     const [bikeRentals, setBikeRentals] = useState<BikeRental[]>([])
     const [page, setPage] = useState(1)
+    const [maxPage, setMaxPage] = useState<number>()
     const [rentalsOnPage, setRentalsOnPage] = useState<BikeRental[]>([])
 
     useEffect (() => {
@@ -18,24 +19,19 @@ const BikeRentals = () =>{
     }, [])
 
     useEffect (() => {
-        setRentalsOnPage(bikeRentals.slice(0,5))
-    }, [bikeRentals])
+        if(bikeRentals){
+            const last = page*20
+            const first = last - 20
+            setRentalsOnPage(bikeRentals.slice(first,last))
+        }
+    }, [page])
 
     useEffect (() => {
-        if(page==0){
-            setPage(1)
-        }
-        let pagesTotal=bikeRentals.length/5 
+        let pagesTotal=bikeRentals.length/20 
         let pagesMax = Math.ceil(pagesTotal)
-
-        if(page===pagesMax+1){
-            setPage(pagesMax)
-        }
-
-        const last = page*5
-        const first = last - 5
-        setRentalsOnPage(bikeRentals.slice(first,last))
-    }, [page, bikeRentals])
+        setMaxPage(pagesMax)
+        setRentalsOnPage(bikeRentals.slice(0,19))
+    }, [bikeRentals])
 
     const getRentals = async() => {
         try{
@@ -47,11 +43,21 @@ const BikeRentals = () =>{
     }
 
     const changePageBack = () => {
-        setPage(page-1)
+        if(page-1==0){
+            setPage(1)
+        }else{
+            setPage(page-1)
+        }
     }
 
     const changePageForth = () => {
-        setPage(page+1)
+        if(maxPage){
+            if(page+1>maxPage){
+                setPage(maxPage)
+            }else{
+                setPage(page+1)
+            }
+        }
     }
 
     return(
@@ -60,7 +66,7 @@ const BikeRentals = () =>{
                 <Link to="/">takaisin</Link>
                 <h2>Vuokrausmatkat</h2>
             </div>
-            {bikeRentals?
+            {rentalsOnPage?
                 <div>
                     <table>
                         <tbody>
@@ -84,7 +90,7 @@ const BikeRentals = () =>{
                         <Button onClick={changePageForth}>&gt;</Button>
                     </Pagination>
                 </div>
-            :""}
+            :<p>Odota hetki</p>}
         </Container>
     )
 }

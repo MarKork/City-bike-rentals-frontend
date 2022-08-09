@@ -11,6 +11,7 @@ import {
 const Stations = () =>{
     const [stations, setStations] = useState<Station[]>([])
     const [page, setPage] = useState(1)
+    const [maxPage, setMaxPage] = useState<number>()
     const [stationsOnPage, setStationsOnPage] = useState<Station[]>([])
 
     useEffect (() => {
@@ -18,25 +19,19 @@ const Stations = () =>{
     }, [])
 
     useEffect (() => {
-        setStationsOnPage(stations.slice(0,8))
-    }, [stations])
+        if(stations){
+            const last = page*20
+            const first = last - 20
+            setStationsOnPage(stations.slice(first,last))
+        }
+    }, [page])
 
     useEffect (() => {
-        if(page==0){
-            setPage(1)
-        }
-
-        let pagesTotal=stations.length/8 
+        let pagesTotal=stations.length/20;
         let pagesMax = Math.ceil(pagesTotal)
-
-        if(page===pagesMax+1){
-            setPage(pagesMax)
-        }
-
-        const last = page*8
-        const first = last - 8
-        setStationsOnPage(stations.slice(first,last))
-    }, [page, stations])
+        setMaxPage(pagesMax)
+        setStationsOnPage(stations.slice(0,20))
+    }, [stations])
 
     const getStations = async() => {
         try{
@@ -48,11 +43,21 @@ const Stations = () =>{
     }
 
     const changePageBack = () => {
-        setPage(page-1)
+        if(page-1==0){
+            setPage(1)
+        }else{
+            setPage(page-1)
+        }
     }
 
     const changePageForth = () => {
-        setPage(page+1)
+        if(maxPage){
+            if(page+1>maxPage){
+                setPage(maxPage)
+            }else{
+                setPage(page+1)
+            }
+        }
     }
 
     return(
@@ -61,7 +66,7 @@ const Stations = () =>{
                 <Link to="/">takaisin</Link>
                 <h2>Kaupunkipyörien asemat</h2>
             </div>
-            {stations?
+            {stationsOnPage?
                 <div>
                     <table>
                         <tbody>
@@ -84,7 +89,7 @@ const Stations = () =>{
                         <Button onClick={changePageForth}>&gt;</Button>
                     </Pagination>
                 </div>
-            :""}
+            :<p>Odota hetki</p>}
         </Container>
     )
 }
