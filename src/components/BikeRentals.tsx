@@ -7,12 +7,14 @@ import Rental from './Rental'
 import {
     Pagination, Button, Container, PageNum
 } from '../styles/styles'
+import Spinner from '../utils/Spinner'
 
 const BikeRentals = () =>{
     const [bikeRentals, setBikeRentals] = useState<BikeRental[]>([])
     const [page, setPage] = useState(1)
     const [maxPage, setMaxPage] = useState<number>()
     const [rentalsOnPage, setRentalsOnPage] = useState<BikeRental[]>([])
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect (() => {
         getRentals()
@@ -35,8 +37,10 @@ const BikeRentals = () =>{
 
     const getRentals = async() => {
         try{
+            setIsLoading(true)
             const response = await axios.get('http://localhost:3001/api/rentals')
             setBikeRentals(response.data)
+            setIsLoading(false)
         }catch (error){
             console.log(error)
         }
@@ -66,7 +70,7 @@ const BikeRentals = () =>{
                 <Link to="/">takaisin</Link>
                 <h2>Vuokrausmatkat</h2>
             </div>
-            {rentalsOnPage?
+            {rentalsOnPage && !isLoading?
                 <div>
                     <table>
                         <tbody>
@@ -90,7 +94,9 @@ const BikeRentals = () =>{
                         <Button onClick={changePageForth}>&gt;</Button>
                     </Pagination>
                 </div>
-            :<p>Odota hetki</p>}
+            :
+            <Spinner/>               
+            }
         </Container>
     )
 }

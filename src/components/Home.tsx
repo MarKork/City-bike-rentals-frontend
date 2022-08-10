@@ -2,6 +2,10 @@ import React from 'react';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import {
+    Button, Container
+} from '../styles/styles'
+import Spinner from '../utils/Spinner'
  
 const Home = () =>{
     const [isDataFetched, setIsDataFetched] = useState(false)
@@ -139,7 +143,8 @@ const Home = () =>{
                 <Link to="/bikerentals">Pyörävuokrat</Link> <Link to="/stations">Asemat</Link>
             </div>
         :
-        <p>Odota hetki, tietoa ladataan.</p>
+        <Spinner/>
+        
     )
 }
     

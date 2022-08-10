@@ -7,6 +7,7 @@ import StationInfo from './StationInfo'
 import {
     Pagination, Button, Container, PageNum
 } from '../styles/styles'
+import Spinner from '../utils/Spinner'
 
 const Stations = () =>{
     const [stations, setStations] = useState<Station[]>([])
@@ -16,6 +17,7 @@ const Stations = () =>{
     const [searchName, setSearchName] = useState("")
     const [isSearch, setIsSearch] = useState(false)
     const [foundStation, setFoundStation] = useState<Station>()
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect (() => {
         getStations()
@@ -38,8 +40,10 @@ const Stations = () =>{
 
     const getStations = async() => {
         try{
+            setIsLoading(true)
             const response = await axios.get('http://localhost:3001/api/stations')
             setStations(response.data)
+            setIsLoading(false)
         }catch (error){
             console.log(error)
         }
@@ -67,11 +71,13 @@ const Stations = () =>{
         e.preventDefault()
         if(searchName){
             try{
+                setIsLoading(true)
                 const response = await axios.get('http://localhost:3001/api/station/name' +  `/${searchName}`)
                 console.log(response.data)
                 setIsSearch(true)
                 setFoundStation(response.data)
                 setSearchName("")
+                setIsLoading(false)
             }catch (error){
                 console.log(error)
             }
@@ -91,7 +97,7 @@ const Stations = () =>{
                 <Link to="/">takaisin</Link>
                 <h2>Kaupunkipyörien asemat</h2>
             </div>
-            {stationsOnPage?
+            {stationsOnPage && !isLoading?
                 <div>
                     <form onSubmit={searchForName}>
                         <input 
@@ -138,7 +144,8 @@ const Stations = () =>{
                         </Pagination>
                     </>}       
                 </div>
-            :<p>Odota hetki</p>}
+            :
+            <Spinner/>}
         </Container>
     )
 }
