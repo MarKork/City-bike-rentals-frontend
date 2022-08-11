@@ -4,11 +4,11 @@ import {Link, useParams} from 'react-router-dom'
 import axios from 'axios'
 import { Station } from '../types';
 import {
-    Pagination, Button, Container, PageNum
+    Container
 } from '../styles/styles'
 import Spinner from '../utils/Spinner'
 
-const StationView = () => {
+const StationView:React.FC = () => {
     const {id} =useParams()
     const [station, setStation] = useState<Station>()
     const [departureStations, setDepartureStations] = useState<number>(0)
@@ -62,20 +62,18 @@ const StationView = () => {
     }
 
     return(
-        <div>
-            <Link to="/stations">takaisin</Link>
-            <h2>Aseman tiedot</h2>
+        <Container>
             {station && !isLoading?
                 <div>
-                    <p>Aseman nimi: {station.name}</p>
-                    <p>Aseman osoite: {station.address}</p>
+                    <h2>{station.name}</h2>
+                    <p>{station.address}</p>
                     <p>Asemalta alkoi matkoja {departureStations} kpl</p>
                     <p>Asemalle päättyi matkoja {returnStations} kpl</p>
                 </div>
             :
             <Spinner/>
             }
-        </div>
+        </Container>
     )
 }
 

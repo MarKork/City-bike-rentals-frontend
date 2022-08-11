@@ -1,15 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
 import { BikeRental } from '../types';
 import Rental from './Rental'
 import {
-    Pagination, Button, Container, PageNum
+    Pagination, Button, PageNum, Table, TBody, Th, Tr
 } from '../styles/styles'
 import Spinner from '../utils/Spinner'
 
-const BikeRentals = () =>{
+const BikeRentals:React.FC = () =>{
     const [bikeRentals, setBikeRentals] = useState<BikeRental[]>([])
     const [page, setPage] = useState(1)
     const [maxPage, setMaxPage] = useState<number>()
@@ -65,29 +64,26 @@ const BikeRentals = () =>{
     }
 
     return(
-        <Container>
-            <div>
-                <Link to="/">takaisin</Link>
-                <h2>Vuokrausmatkat</h2>
-            </div>
+        <>
+            <h2>Vuokrausmatkat</h2>
             {rentalsOnPage && !isLoading?
                 <div>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>Lähtöasema</th>
-                                <th>Saapumisasema</th>
-                                <th>Matka</th>
-                                <th>Aika</th>
-                            </tr>
+                    <Table>
+                        <TBody>
+                            <Tr>
+                                <Th>Lähtöasema</Th>
+                                <Th>Saapumisasema</Th>
+                                <Th>Km</Th>
+                                <Th>Min</Th>
+                            </Tr>
                             {rentalsOnPage.map((rental, index)=>
                                 <Rental 
                                     key={index}
                                     rental={rental}
                                 />
                             )}
-                        </tbody>
-                    </table>
+                        </TBody>
+                    </Table>
                     <Pagination>
                         <Button onClick={changePageBack}>&lt;</Button>
                             <PageNum>{page}</PageNum>
@@ -97,7 +93,7 @@ const BikeRentals = () =>{
             :
             <Spinner/>               
             }
-        </Container>
+        </>
     )
 }
     

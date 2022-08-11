@@ -1,6 +1,9 @@
 import React from 'react';
 import { BikeRental } from '../types';
 import { useState, useEffect } from 'react'
+import {
+    Tr, Td
+} from '../styles/styles'
 
 const Rental = ({rental}:{rental:BikeRental}) => {
     const [distance, setDistance] = useState("0")
@@ -24,20 +27,20 @@ const Rental = ({rental}:{rental:BikeRental}) => {
     }
 
     return (
-        <tr>
-            <td>
+        <Tr>
+            <Td>
                 {rental.departureStationName}  
-            </td>
-            <td>
+            </Td>
+            <Td>
                 {rental.returnStationName}  
-            </td>
-            <td>
+            </Td>
+            <Td>
                 {distance}  
-            </td>
-            <td>
+            </Td>
+            <Td>
                 {duration}  
-            </td>
-        </tr>
+            </Td>
+        </Tr>
     )
 }
 

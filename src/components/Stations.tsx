@@ -1,15 +1,14 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Station } from '../types';
 import StationInfo from './StationInfo'
 import {
-    Pagination, Button, Container, PageNum
+    Pagination, Button, PageNum, Table, TBody, Th, Tr
 } from '../styles/styles'
 import Spinner from '../utils/Spinner'
 
-const Stations = () =>{
+const Stations:React.FC = () =>{
     const [stations, setStations] = useState<Station[]>([])
     const [page, setPage] = useState(1)
     const [maxPage, setMaxPage] = useState<number>()
@@ -80,10 +79,13 @@ const Stations = () =>{
                 setIsLoading(false)
             }catch (error){
                 console.log(error)
+                setIsLoading(false)
+                setIsSearch(false)
             }
         }else{
             getStations()
             setIsSearch(false)
+            setIsLoading(false)
         }
     }
 
@@ -92,11 +94,8 @@ const Stations = () =>{
     }
 
     return(
-        <Container>
-            <div>
-                <Link to="/">takaisin</Link>
-                <h2>Kaupunkipyörien asemat</h2>
-            </div>
+        <>
+            <h2>Asemat</h2>
             {stationsOnPage && !isLoading?
                 <div>
                     <form onSubmit={searchForName}>
@@ -108,35 +107,35 @@ const Stations = () =>{
                         <Button type="submit">Hae</Button>
                     </form>
                     {isSearch&&foundStation?
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Tunnus</th>
-                                    <th>Nimi</th>
-                                    <th>Osoite</th>
-                                </tr>
+                        <Table>
+                            <TBody>
+                                <Tr>
+                                    <Th>Tunnus</Th>
+                                    <Th>Nimi</Th>
+                                    <Th>Osoite</Th>
+                                </Tr>
                                 <StationInfo 
                                     key={1}
                                     station={foundStation}
                                 />
-                            </tbody>
-                        </table>
+                            </TBody>
+                        </Table>
                     :<>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th>Tunnus</th>
-                                    <th>Nimi</th>
-                                    <th>Osoite</th>
-                                </tr>
+                        <Table>
+                            <TBody>
+                                <Tr>
+                                    <Th>Tunnus</Th>
+                                    <Th>Nimi</Th>
+                                    <Th>Osoite</Th>
+                                </Tr>
                                 {stationsOnPage.map((station, index)=>
                                     <StationInfo 
                                         key={index}
                                         station={station}
                                     />
                                 )}
-                            </tbody>
-                        </table>
+                            </TBody>
+                        </Table>
                         <Pagination>
                             <Button onClick={changePageBack}>&lt;</Button>
                                 <PageNum>{page}</PageNum>
@@ -146,7 +145,7 @@ const Stations = () =>{
                 </div>
             :
             <Spinner/>}
-        </Container>
+        </>
     )
 }
     

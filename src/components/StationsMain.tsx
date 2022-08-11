@@ -1,37 +1,18 @@
 import React from 'react';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import Stations from './Stations'
 import {
-    Button, Container
+    Container
 } from '../styles/styles'
 import Spinner from '../utils/Spinner'
  
-const Home = () =>{
-    const [isDataFetched, setIsDataFetched] = useState(false)
-    const [isRentalsDataFetched, setIsRentalsDataFetched] = useState(false)
+const StationsMain:React.FC = () =>{
     const [isStationsDataFetched, setIsStationsDataFetched] = useState(false)
 
     useEffect (() => {
-        getRentalsCount()
         getStationsCount()
     }, [])
-
-    useEffect (() => {
-        if(isRentalsDataFetched&&isStationsDataFetched){
-            setIsDataFetched(true)
-        }
-    }, [isRentalsDataFetched, isStationsDataFetched])
-
-    const getRentalsCount = () => {
-        axios.get('http://localhost:3001/api/total')
-          .then(res=> {
-            if(res.data["count"]===0){
-                setIsRentalsDataFetched(false)
-                getRentalsData()
-            }else setIsRentalsDataFetched(true)
-        })
-    }
 
     const getStationsCount = () => {
         axios.get('http://localhost:3001/api/totalstations')
@@ -43,32 +24,10 @@ const Home = () =>{
         })
     }
 
-    const getRentalsData = async () =>{
-        const {data} =await axios.get(`https://dev.hsl.fi/citybikes/od-trips-2021/2021-05.csv`)
-        parseRentalsCSV(data)
-    }
-
     const getStationsData = async () =>{
         const {data} =await axios.get(`https://opendata.arcgis.com/datasets/726277c507ef4914b0aec3cbcfcbfafc_0.csv`)
         parseStationsCSV(data)
     }
-
-    const parseRentalsCSV = async (text:string) => {
-        const lines = text.split('\n');
-        const output:Array<any> = [];
-        let i:number=0
-      
-        lines.forEach(async(line) => {
-            const columns = line.split(',');
-            //data validation here:
-            if(Number(columns[6])>10&&Number(columns[7])>10&&i<200){
-                columns[7]=columns[7].replace("\r", "")
-                output.push(columns);
-            }
-            i++
-        });
-        addRentals(output)
-    };
 
     const parseStationsCSV = async (text:string) => {
         const lines = text.split('\n');
@@ -112,18 +71,6 @@ const Home = () =>{
         addStations(output)
     };
 
-    const addRentals = async (rentalData:Array<any>) => {
-        for (const rental of rentalData){ 
-            try{
-                const response = await axios
-                    .post('/api/rentals', rental)
-                    setIsRentalsDataFetched(true)
-            }catch(err){
-                console.log(err)
-            }
-        }
-    }
-
     const addStations = async (stationsData:Array<any>) => {
         for (const station of stationsData){ 
             try{
@@ -137,15 +84,13 @@ const Home = () =>{
     }
 
     return(
-        isDataFetched?
-            <div>
-                <p>Valitse näkymä:</p>
-                <Link to="/bikerentals">Pyörävuokrat</Link> <Link to="/stations">Asemat</Link>
-            </div>
-        :
-        <Spinner/>
-        
+        <Container>
+            {isStationsDataFetched?
+                <Stations/>
+            :
+            <Spinner/>}
+        </Container>
     )
 }
     
-export default Home;
+export default StationsMain;
