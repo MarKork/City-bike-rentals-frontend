@@ -1,46 +1,22 @@
-# Getting Started with Create React App
+# App City Bike Rentals App frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## About this app
 
-In the project directory, you can run:
+This app is for showing the data for city bike rentals and stations in Helsinki Capital area. It has been created using Typescript and React. There is also a backend for this app which is made using Node.js and MongoDB as database. This frontend app uses axios for fetching the data and Material UI for styling the UI.
+
+With this app it is possible to list city bike rental journeys with pagination. The app shows the departure and return stations, covered distance in kilometers and duration in minutes. It is also possible to list city bike stations with pagination where the app is showing the id, name and address of stations. And also you can search for a certain station by name. You can also open a single station view by clicking the name of the station. There you can see the name and address of the station and also the number of journeys which began from and ended to the station.
+
+Before the app can show any info for you, it checks if there are any items saved to the database. If there is nothing saved in it, the app gets info about the journeys and stations from the internet and saves the data to the database. That is why the opening of the app could be slow but there is spinner telling for you that the app is loading data. The frontend and backend should be opened and working on the same time.
+
+## Using this app
+
+For using this app you should fork the repository for your own PC/laptop and give this order in the terminal: 
+
+### `npm install`
+
+After installation give this: 
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+for starting it locally.
