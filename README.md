@@ -1,4 +1,4 @@
-# App City Bike Rentals App frontend
+# City Bike Rentals App frontend
 
 
 ## About this app
